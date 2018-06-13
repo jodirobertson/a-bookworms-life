@@ -1,0 +1,36 @@
+The IModel keeps track of the IFigures and IAnimations that are the information for this program.
+
+The IModel holds the methods: animate(IAnimation, String), add(IFigure), getFigure(String), and
+getState(). Each IFigure added to the composition must have a unique name, used to reference the
+current state of the IFigure to be modified.
+
+This model is implemented using several data structures to keep track of the figures and animations.
+A list of all figures made in the composition, a list of all animations made in the composition,
+and a map of which animations have been performed on a given figure are kept track of in the Model.
+
+The IModelImpl has access to IFigure, the interface that represents all of the shapes that can be
+added to the composition. All shared data and methods are stored in the IFigureAbstract. Methods
+and data specific to the concrete implementations (Oval and Rectangle, so far) are stored in their
+respective classes, IFigureImplOval and IFigureImplRectangle.
+
+The IModelImpl also has access to IAnimation, the interface that represents all of the animations
+that can be added to the composition. All shared data and methods are stored in the
+IAnimationAbstract class. Methods and data specific to the concrete implementations (Move, Scale,
+and ChangeColor, so far) are stored in their respective classes, IAnimationImplMove,
+IAnimationImplScale, and IAnimationImplColorChange.
+
+IAnimationsCompEnd, IAnimationsCompStart, and IFiguresComp are all classes that use Comparator<T> to
+sort data structures in the IModel class based on end times, start times, and appear times.
+
+Potential future IAnimations might include: MoveTo, Rotate, ChangeShapeTo, AppearAt, DisappearAt.
+Potential future IFigures might include more shapes, such as a snowflake, line, circle (note in code
+about potential future radius adjustment), or even a Group, made up of several other IFigures.
+
+For edge cases:
+
+You may start an IAnimation of an IFigure before it appears to allow for flexible editing and
+fluidity for changing one's mind while designing.
+
+You may move an IFigure as far off screen as you would like. This allows shapes to disappear fully,
+even if their center is off-screen, and provides options for scalability of the canvas. My idea
+here is based on vector graphics.
