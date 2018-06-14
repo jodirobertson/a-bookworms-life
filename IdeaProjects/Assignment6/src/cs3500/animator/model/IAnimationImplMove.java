@@ -49,6 +49,8 @@ public class IAnimationImplMove extends IAnimationAbstract implements IAnimation
     return copy;
   }
 
+  //TODO: MAKE DEFAULT METHOD AND THEN OVERRIDE
+
   @Override
   public double getXFactor() {
     return 0;

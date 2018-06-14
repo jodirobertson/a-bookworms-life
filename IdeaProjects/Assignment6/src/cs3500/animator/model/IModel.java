@@ -37,12 +37,41 @@ public interface IModel {
    */
   IFigure getFigure(String fName) throws IllegalArgumentException;
 
-  //TODO: JAvadocs!
+  /**
+   * Returns a the Hashmap that stores which animations are occuring on each shape at a time.
+   *
+   * @return Returns a Hashmap of the String (name of IFigure) to a list of all IAnimations which
+   * are applied to that shape
+   */
+  HashMap<String, List<IAnimation>> getAnimationsByShape();
+
+  /**
+   * Returns a list of all IFigures in the composition, ordered by their appear times.
+   *
+   * @return Returns a list of all IFigures in the composition, ordered by their appear times.
+   */
   List<IFigure> getFiguresByStartTime();
 
+  /**
+   * Returns a list of all IAnimations in the composition, ordered by their appear times.
+   *
+   * @return Returns a list of all IAnimations in the composition, ordered by their appear times.
+   */
   List<IAnimation> getAnimationsByStartTime();
 
+  /**
+   * Returns a HashMap that couples the IAnimations to the IFigures.
+   *
+   * @return Returns a HashMap that couples every IAnimation to the name of an IFigure.
+   */
   HashMap<IAnimation, String> getMasterList();
 
+  /**
+   * Returns a Hashmap of the name of an IFigure in the composition to its current, animated version
+   * of the IFigure of the same unique name.
+   *
+   * @return Returns a Hashmap of the IFigure that is most updated with IAnimations, retrieved by
+   * its name.
+   */
   HashMap<String, IFigure> getUpdatedFigures();
 }

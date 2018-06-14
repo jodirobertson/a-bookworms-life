@@ -51,6 +51,12 @@ public class IModelImpl implements IModel {
   }
 
   @Override
+  public HashMap<String, List<IAnimation>> getAnimationsByShape() {
+    HashMap<String, List<IAnimation>> copy = (this.animationTimes);
+    return copy;
+  }
+
+  @Override
   public List<IFigure> getFiguresByStartTime() {
     List<IFigure> copy = new LinkedList<>();
     for(IFigure f : this.figuresByTime) {

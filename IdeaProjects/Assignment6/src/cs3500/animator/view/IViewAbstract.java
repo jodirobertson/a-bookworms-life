@@ -1,5 +1,9 @@
 package cs3500.animator.view;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import cs3500.animator.model.IModel;
 
 /**
@@ -8,6 +12,7 @@ import cs3500.animator.model.IModel;
 abstract class IViewAbstract implements IView {
   IModel model;
   double tick;
+  NumberFormat f = new DecimalFormat("#0.0");
 
   /**
    * Default constructor for IViewAbstract.
@@ -23,6 +28,23 @@ abstract class IViewAbstract implements IView {
   void checkTick() throws IllegalArgumentException {
     if (this.tick <= 0) {
       throw new IllegalArgumentException("Tick must be greater than zero.");
+    }
+  }
+
+  /**
+   * Appends given string argument to the specified output. Catches an IOException if
+   * the output cannot be appended to.
+   *
+   * @param out The specified Appendable output for the SVG view.
+   * @param s The desired String to be appended.
+   * @throws IllegalArgumentException if the output cannot be appended to.
+   */
+  void appendHelper(Appendable out, String s) throws IllegalArgumentException {
+    try {
+      out.append(s);
+    }
+    catch (IOException e) {
+      throw new IllegalArgumentException("Could not be appended to output");
     }
   }
 }

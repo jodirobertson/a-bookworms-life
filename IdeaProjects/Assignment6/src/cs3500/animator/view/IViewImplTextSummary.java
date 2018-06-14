@@ -1,9 +1,5 @@
 package cs3500.animator.view;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 import cs3500.animator.model.IAnimation;
 import cs3500.animator.model.IFigure;
 import cs3500.animator.model.IModel;
@@ -13,7 +9,6 @@ import cs3500.animator.model.IModel;
  */
 public class IViewImplTextSummary extends IViewAbstract implements IView {
   private Appendable output;
-  private NumberFormat f = new DecimalFormat("#0.0");
 
   /**
    * Constructs a view that outputs a summary of text that describes all of the shapes in the
@@ -27,7 +22,7 @@ public class IViewImplTextSummary extends IViewAbstract implements IView {
     super.model = model;
     this.output = output;
     super.tick = tick;
-    checkTick(); //TODO
+    checkTick();
   }
 
   /**
@@ -203,10 +198,6 @@ public class IViewImplTextSummary extends IViewAbstract implements IView {
 
   @Override
   public void play() throws IllegalArgumentException {
-    try {
-      this.output.append("Shapes:" + printFigures() + printAnimations());
-    } catch (IOException e) { //TODO: ask at office hours
-      throw new IllegalArgumentException("Should this be illegal state?");
-    }
+    appendHelper(this.output, "Shapes:" + printFigures() + printAnimations());
   }
 }

@@ -9,6 +9,4 @@ public interface IView {
    * Shows an animation.
    */
   void play();
-
-
 }
