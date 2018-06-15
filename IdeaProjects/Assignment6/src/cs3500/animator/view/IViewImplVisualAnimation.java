@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+import javax.swing.JScrollPane;
 
 import cs3500.animator.model.IAnimation;
 import cs3500.animator.model.IAnimationImplColorChange;
@@ -39,16 +41,16 @@ public class IViewImplVisualAnimation extends JFrame implements IView {
 
     timer.addActionListener(new ActionListener() {
 
-                              @Override
-                              public void actionPerformed(ActionEvent e) {
-                                drawingPanel.drawShapes(animationShapes.get(time));
-                                drawingPanel.repaint();
-                                if (time == model.maxTime()) {
-                                  timer.stop();
-                                }
-                                time++;
-                              }
-                            }
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        drawingPanel.drawShapes(animationShapes.get(time));
+        drawingPanel.repaint();
+        if (time == model.maxTime()) {
+          timer.stop();
+          }
+          time++;
+        }
+      }
     );
 
     for (int i = 0; i <= model.maxTime(); i++) {
@@ -73,7 +75,7 @@ public class IViewImplVisualAnimation extends JFrame implements IView {
    *
    * @param time The given time to be queried for figures to draw.
    * @return Returns an ArrayList of IFigures to be drawn at a given time, according to when they
-   * were first created.
+   *     were first created.
    */
   private ArrayList<IFigure> draw(int time) {
     ArrayList<IFigure> result = new ArrayList<>();
@@ -177,10 +179,9 @@ public class IViewImplVisualAnimation extends JFrame implements IView {
     double newG = a.getNewColor()[1];
     double oldB = f.getColor()[2];
     double newB = a.getNewColor()[2];
-    double[] updatedColor = new double[]
-            {interpolate(oldR, newR, a.getStartTime(), a.getEndTime(), time),
-                    interpolate(oldG, newG, a.getStartTime(), a.getEndTime(), time),
-                    interpolate(oldB, newB, a.getStartTime(), a.getEndTime(), time)};
+    double[] updatedColor = new double[] {interpolate(oldR, newR, a.getStartTime(),
+            a.getEndTime(), time), interpolate(oldG, newG, a.getStartTime(), a.getEndTime(), time),
+            interpolate(oldB, newB, a.getStartTime(), a.getEndTime(), time)};
     return new IAnimationImplColorChange(model, f.getName(), updatedColor,
             a.getStartTime(), a.getEndTime()).accept(f);
   }

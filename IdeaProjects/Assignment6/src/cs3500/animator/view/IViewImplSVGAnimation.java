@@ -81,19 +81,19 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
    * @param f The IFigure that is having its start and end times converted.
    * @return Returns a String of the start time in SVG format.
    */
-  private String formatStartTime(IFigure f) {
+  private String formatStartTimeFigure(IFigure f) {
     return super.f.format(f.getAppearTime() * 1000 / tick);
   }
 
   /**
-   * Resets the default visibility so that the IFiggure "appears" based on desired appear time.
+   * Resets the default visibility so that the IFigure "appears" based on desired appear time.
    *
    * @param fig The IFigure to be drawn.
    * @return Returns a String that sets the visibility according to when the IFigure appears.
    */
   private String setVis(IFigure fig) {
     return "<set attributeType=\"xml\" attributeName=\"visibility\" from=\"hidden\" \n" +
-            "to=\"visible\" begin=\"" + formatStartTime(fig) + "ms\" />\n";
+            "to=\"visible\" begin=\"" + formatStartTimeFigure(fig) + "ms\" />\n";
   }
 
   /**
@@ -141,7 +141,7 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
    * @param a The IAnimation that is having its start and end times converted.
    * @return Returns a String of the start time in SVG format.
    */
-  private String formatStartTime(IAnimation a) {
+  private String formatStartTimeAnim(IAnimation a) {
     return super.f.format(a.getStartTime() * 1000 / tick);
   }
 
@@ -162,7 +162,7 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
    */
   private void animateColorChange(IAnimation a) {
 
-    String addAnim = "<animate attributeType=\"CSS\" begin=\"" + formatStartTime(a) + "ms\" " +
+    String addAnim = "<animate attributeType=\"CSS\" begin=\"" + formatStartTimeAnim(a) + "ms\" " +
             "dur=\"" + formatDuration(a) + "ms\" \nattributeName=\"fill\" from=\""
             + convertColor(a.getFigure().getColor()) + "\" \nto=\"" + convertColor(a.getNewColor())
             + "\" fill=\"freeze\" />\n";
@@ -177,7 +177,7 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
    * @param xy The dimension that is being scaled.
    */
   private void animateScale(IAnimation a, char xy) {
-    String DimName;
+    String dimName;
     String sub1;
     String sub2;
 
@@ -185,34 +185,34 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
     switch (a.getFigure().getShape()) {
       case "oval":
         if (xy == 'x') {
-          DimName = "rx";
+          dimName = "rx";
           sub1 = "" + a.getFigure().getXDim();
           sub2 = "" + a.getFigure().updateDims(a.getXFactor(), a.getYFactor()).getXDim();
         } else {
-          DimName = "ry";
+          dimName = "ry";
           sub1 = "" + a.getFigure().getYDim();
           sub2 = "" + a.getFigure().updateDims(a.getXFactor(), a.getYFactor()).getYDim();
         }
         break;
       case "rectangle":
         if (xy == 'x') {
-          DimName = "width";
+          dimName = "width";
           sub1 = "" + a.getFigure().getXDim();
           sub2 = "" + a.getFigure().updateDims(a.getXFactor(), a.getYFactor()).getXDim();
         } else {
-          DimName = "height";
+          dimName = "height";
           sub1 = "" + a.getFigure().getYDim();
           sub2 = "" + a.getFigure().updateDims(a.getXFactor(), a.getYFactor()).getYDim();
         }
         break;
       default:
-        DimName = "error";
+        dimName = "error";
         sub1 = "";
         sub2 = "";
     }
 
-    String addAnim = "<animate attributeType=\"xml\" begin=\"" + formatStartTime(a) + "ms\" " +
-            "dur=\"" + formatDuration(a) + "ms\" \nattributeName=\"" + DimName + "\" from=\""
+    String addAnim = "<animate attributeType=\"xml\" begin=\"" + formatStartTimeAnim(a) + "ms\" " +
+            "dur=\"" + formatDuration(a) + "ms\" \nattributeName=\"" + dimName + "\" from=\""
             + sub1 + "\" to=\"" + sub2 + "\" fill=\"freeze\" />\n";
 
     appendHelper(this.output, addAnim);
@@ -247,7 +247,7 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
       sub1 = "" + a.getFigure().getYPos();
       sub2 = "" + a.getFigure().updatePosn(a.getDX(), a.getDY()).getYPos();
     }
-    String addAnim = "<animate attributeType=\"xml\" begin=\"" + formatStartTime(a) + "ms\" " +
+    String addAnim = "<animate attributeType=\"xml\" begin=\"" + formatStartTimeAnim(a) + "ms\" " +
             "dur=\"" + formatDuration(a) + "ms\" \nattributeName=\"" + attName + "\" from=\""
             + sub1 + "\" to=\"" + sub2 + "\" fill=\"freeze\" />\n";
 
@@ -261,10 +261,10 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
    * @param a The IAnimation to be written into SVG format.
    */
   private void checkMoveAndExecute(IAnimation a) {
-    if (!(a.getDX() == 0)) {
+    if (a.getDX() != 0) {
       animateMove(a, 'x');
     }
-    if (!(a.getDY() == 0)) {
+    if (a.getDY() != 0) {
       animateMove(a, 'y');
     }
   }
@@ -276,10 +276,10 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
    * @param a The IAnimation to be written into SVG format.
    */
   private void checkScaleAndExecute(IAnimation a) {
-    if (!(a.getXFactor() == 1)) {
+    if (a.getXFactor() != 1) {
       animateScale(a, 'x');
     }
-    if (!(a.getYFactor() == 1)) {
+    if (a.getYFactor() != 1) {
       animateScale(a, 'y');
     }
   }

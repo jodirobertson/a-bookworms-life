@@ -18,6 +18,7 @@ abstract class IViewAbstract implements IView {
    * Default constructor for IViewAbstract.
    */
   IViewAbstract() {
+    // default constructor
   }
 
   /**

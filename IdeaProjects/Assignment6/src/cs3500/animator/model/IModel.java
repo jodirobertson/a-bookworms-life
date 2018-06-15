@@ -48,7 +48,7 @@ public interface IModel {
    * Returns a the Hashmap that stores which animations are occuring on each shape at a time.
    *
    * @return Returns a Hashmap of the String (name of IFigure) to a list of all IAnimations which
-   * are applied to that shape
+   *     are applied to that shape
    */
   HashMap<String, List<IAnimation>> getAnimationsByShape();
 
@@ -78,7 +78,7 @@ public interface IModel {
    * of the IFigure of the same unique name.
    *
    * @return Returns a Hashmap of the IFigure that is most updated with IAnimations, retrieved by
-   * its name.
+   *     its name.
    */
   HashMap<String, IFigure> getUpdatedFigures();
 
@@ -87,7 +87,7 @@ public interface IModel {
    * the composition.
    *
    * @return Returns a LinkedList of IFigures in ascending order of when they are added to the
-   * composition.
+   *     composition.
    */
   List<IFigure> getFiguresByAdd();
 }

@@ -352,7 +352,8 @@ public class IModelImplTest {
     assertEquals("Shapes:\n" +
                     "Name: C\n" +
                     "Type: oval\n" +
-                    "Center: (500.0,100.0), X radius: 60.0, Y radius: 30.0, Color: (0.0,0.0,1.0)\n" +
+                    "Center: (500.0,100.0), X radius: 60.0, Y radius: 30.0," +
+                    " Color: (0.0,0.0,1.0)\n" +
                     "Appears at t=1.0s\n" +
                     "Disappears at t=100.0s\n" +
                     "\n" +
@@ -447,7 +448,8 @@ public class IModelImplTest {
                     "\n" +
                     "Name: C\n" +
                     "Type: oval\n" +
-                    "Center: (500.0,100.0), X radius: 60.0, Y radius: 30.0, Color: (0.0,0.0,1.0)\n" +
+                    "Center: (500.0,100.0), X radius: 60.0, Y radius: 30.0" +
+                    ", Color: (0.0,0.0,1.0)\n" +
                     "Appears at t=6.0s\n" +
                     "Disappears at t=100.0s\n" +
                     "\n" +

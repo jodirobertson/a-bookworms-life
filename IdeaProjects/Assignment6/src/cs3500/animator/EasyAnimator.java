@@ -1,11 +1,16 @@
 package cs3500.animator;
 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 
 import cs3500.animator.model.IModel;
 import cs3500.animator.model.IModelImpl;
 import cs3500.animator.util.AnimationFileReader;
-import cs3500.animator.util.TweenModelBuilder;
 import cs3500.animator.util.TweenModelBuilderImpl;
 import cs3500.animator.view.IView;
 import cs3500.animator.view.IViewImplTextSummary;
@@ -16,18 +21,19 @@ import cs3500.animator.view.IViewImplVisualAnimation;
  * Runs the main program according to given arguments.
  */
 public final class EasyAnimator {
+
   /**
-   *Constructs a compostion of animated iFigures in the desired view format according to
+   * Constructs a compostion of animated iFigures in the desired view format according to
    * user-provided input, output, and tempo.
    *
    * @param args The input file name, type of view desired, output type desired, and tempo.
    * @throws Exception if any of the given arguments are invalid.
    */
   public static void main(String[] args) throws Exception {
-    String fileName = "test/buildings.txt";
-    String viewType = "visual";
-    String outputType = "out.svg";
-    double tempo = 0.1;
+    String fileName = "";
+    String viewType = "";
+    String outputType = "";
+    double tempo = 20;
 
     for (int i = 0; i < args.length; i++) {
       switch (args[i]) {
@@ -48,7 +54,8 @@ public final class EasyAnimator {
           i++;
           break;
         default:
-          throw new IllegalArgumentException("Invalid input");
+          JOptionPane.showMessageDialog(new JFrame(), "Invalid arguments",
+                  "Error message", JOptionPane.ERROR_MESSAGE);
       }
     }
 
@@ -59,13 +66,30 @@ public final class EasyAnimator {
 
     IView view;
     IModel model = new IModelImpl();
-    Appendable output = new StringBuffer();
+    Appendable output = System.out;
+
+    FileWriter writer = null;
+
+    if (outputType.equals("out")) {
+      output = System.out;
+    } else if (outputType.length() > 4 &&
+            (outputType.substring(outputType.length() - 4).equals(".svg") ||
+                    outputType.substring(outputType.length() - 4).equals(".txt"))) {
+      try {
+        writer = new FileWriter(outputType);
+      } catch (IOException e) {
+        System.err.println("Caught IOException: " + e.getMessage());
+      }
+      output = writer;
+    } else if (!outputType.equals("")) {
+      JOptionPane.showMessageDialog(new JFrame(), "Invalid arguments",
+              "Error message", JOptionPane.ERROR_MESSAGE);
+    }
 
     try {
-      TweenModelBuilder<IModel> tween = new TweenModelBuilderImpl();
-      model = new AnimationFileReader().readFile(fileName, tween);
+      model = new AnimationFileReader().readFile(fileName, new TweenModelBuilderImpl());
     } catch (FileNotFoundException e) {
-      throw new IllegalArgumentException("Given input file was not found");
+      throw new IllegalArgumentException("Input file not found.");
     }
 
     switch (viewType) {
@@ -78,16 +102,19 @@ public final class EasyAnimator {
         view.play();
         break;
       case "svg":
-        // catches output exceptions
-        try {
-          view = new IViewImplSVGAnimation(model, output, tempo, 1200, 900);
-          view.play();
-        } catch (Exception e) {
-          throw new IllegalArgumentException(e.getMessage());
-        }
+        view = new IViewImplSVGAnimation(model, output, tempo, 800, 800);
+        view.play();
         break;
       default:
-        throw new IllegalArgumentException("Invalid view type");
+        JOptionPane.showMessageDialog(new JFrame(), "Invalid arguments",
+                "Error message", JOptionPane.ERROR_MESSAGE);
+    }
+    if (writer != null) {
+      try {
+        writer.close();
+      } catch (IOException e) {
+        throw new IllegalArgumentException("Could not close output.");
+      }
     }
   }
 }

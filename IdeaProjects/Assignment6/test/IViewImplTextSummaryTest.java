@@ -45,7 +45,7 @@ public class IViewImplTextSummaryTest {
   @Test(expected = IllegalArgumentException.class)
   public void testClosedOutput() throws Exception {
     TweenModelBuilder<IModel> tween = new TweenModelBuilderImpl();
-    IModel model = new AnimationFileReader().readFile("test/small-demo.txt", tween);
+    IModel model = new AnimationFileReader().readFile("resources/small-demo.txt", tween);
     Appendable out = new BufferedWriter(new StringWriter());
     ((BufferedWriter) out).close();
     IView view = new IViewImplTextSummary(model, out, 20);
@@ -57,7 +57,7 @@ public class IViewImplTextSummaryTest {
   public void testInputNotFound() throws Exception {
     Appendable out = new StringBuffer();
     TweenModelBuilder<IModel> tween = new TweenModelBuilderImpl();
-    IModel model = new AnimationFileReader().readFile("small-demo.txt", tween);
+    IModel model = new AnimationFileReader().readFile("test/small-demo.txt", tween);
     IView view = new IViewImplTextSummary(model, out, 3);
     view.play();
   }
@@ -87,7 +87,7 @@ public class IViewImplTextSummaryTest {
   public void testUsingFile() throws Exception {
     Appendable out = new StringBuffer();
     TweenModelBuilder<IModel> tween = new TweenModelBuilderImpl();
-    IModel model = new AnimationFileReader().readFile("test/small-demo.txt", tween);
+    IModel model = new AnimationFileReader().readFile("resources/small-demo.txt", tween);
     IView view = new IViewImplTextSummary(model, out, 3);
     view.play();
     assertEquals("Shapes:\n" +
@@ -311,7 +311,7 @@ public class IViewImplTextSummaryTest {
   public void testBuildings() throws FileNotFoundException {
     Appendable out = new StringBuffer();
     TweenModelBuilder<IModel> tween = new TweenModelBuilderImpl();
-    IModel model = new AnimationFileReader().readFile("test/buildings.txt", tween);
+    IModel model = new AnimationFileReader().readFile("resources/buildings.txt", tween);
     IView view = new IViewImplTextSummary(model, out, 2);
     view.play();
     assertEquals("Shapes:\n" +

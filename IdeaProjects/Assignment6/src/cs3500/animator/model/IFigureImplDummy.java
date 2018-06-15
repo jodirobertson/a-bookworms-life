@@ -140,8 +140,8 @@ public class IFigureImplDummy implements IFigure {
 
   @Override
   public IFigure updateColor(double[] newColor) {
-    return new IFigureImplDummy(model, shapeName, newColor, name, xPos, yPos, appearsAt, disappearsAt,
-            xDim, yDim);
+    return new IFigureImplDummy(model, shapeName, newColor, name, xPos, yPos,
+            appearsAt, disappearsAt, xDim, yDim);
   }
 
   @Override
