@@ -74,4 +74,13 @@ public interface IModel {
    * its name.
    */
   HashMap<String, IFigure> getUpdatedFigures();
+
+  /**
+   * Returns a List of all IFigures added to the composition, based on the order they are added to
+   * the composition.
+   *
+   * @return Returns a LinkedList of IFigures in ascending order of when they are added to the
+   * composition.
+   */
+  List<IFigure> getFiguresByAdd();
 }

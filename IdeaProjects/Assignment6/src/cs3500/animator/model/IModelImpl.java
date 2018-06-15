@@ -31,6 +31,9 @@ public class IModelImpl implements IModel {
   // stores which animations are occuring on each shape at a time
   private HashMap<String, List<IAnimation>> animationTimes;
 
+  // stores a list of figures based on when they are added to the composition
+  private List<IFigure> figuresByAdd;
+
   /**
    * Constructs an IModelImpl to create a composition of IFigures and IAnimations.
    */
@@ -40,6 +43,7 @@ public class IModelImpl implements IModel {
     this.figuresByTime = new LinkedList<>();
     this.animationsByStartTime = new LinkedList<>();
     this.animationTimes = new HashMap<>();
+    this.figuresByAdd = new LinkedList<>();
   }
 
   @Override
@@ -86,6 +90,15 @@ public class IModelImpl implements IModel {
     return copy;
   }
 
+  @Override
+  public List<IFigure> getFiguresByAdd() {
+    List<IFigure> copy = new LinkedList<>();
+    for(IFigure f : this.figuresByAdd) {
+      copy.add(f);
+    }
+    return copy;
+  }
+
   /**
    * Updates the list of IFigures to be sorted according to their appear times.
    */
@@ -111,6 +124,7 @@ public class IModelImpl implements IModel {
       }
     }
     this.figuresByTime.add(f);
+    this.figuresByAdd.add(f);
     this.figures.put(f.getName(), f);
     this.animationTimes.put(f.getName(), new LinkedList<IAnimation>());
     sortFigures();

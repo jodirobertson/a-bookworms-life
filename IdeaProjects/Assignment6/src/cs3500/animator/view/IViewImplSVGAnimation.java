@@ -59,16 +59,37 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
   }
 
   /**
+   * Formats the start time of the IFigure according to SVG format.
+   *
+   * @param f The IFigure that is having its start and end times converted.
+   * @return Returns a String of the start time in SVG format.
+   */
+  private String formatStartTime(IFigure f) {
+    return super.f.format(f.getAppearTime() * 1000 / tick);
+  }
+
+  /**
+   * Resets the default visibility so that the IFiggure "appears" based on desired appear time.
+   *
+   * @param fig The IFigure to be drawn.
+   * @return Returns a String that sets the visibility according to when the IFigure appears.
+   */
+  private String setVis(IFigure fig) {
+    return "<set attributeType=\"xml\" attributeName=\"visibility\" from=\"hidden\" \n" +
+            "to=\"visible\" begin=\"" + formatStartTime(fig) + "ms\" />\n";
+  }
+
+  /**
    * Writes the first line that adds a rectangle to the SVG output.
    *
    * @param fig The given IFigure that is to be added to the SVG output.
    */
   private void openRectangle(IFigure fig) {
-    String addRect = "<rect id=\"" + fig.getName() + "\" x=\"" + fig.getXPos() + "\" y=\"" + fig.getYPos()
-            + "\" width=\"" + fig.getXDim() + "\" height=\"" + fig.getYDim() + "\" \n" +
-            "fill=\"" + convertColor(fig.getColor()) + "\" visibility=\"visible\" >\n";
-
+    String addRect = "<rect id=\"" + fig.getName() + "\" x=\"" + fig.getXPos() + "\" y=\""
+            + fig.getYPos() + "\" width=\"" + fig.getXDim() + "\" height=\"" + fig.getYDim()
+            + "\" \n fill=\"" + convertColor(fig.getColor()) + "\" visibility=\"hidden\" >\n";
     appendHelper(this.output, addRect);
+    appendHelper(this.output, setVis(fig));
   }
 
   /**
@@ -82,10 +103,12 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
    * Writes the first line of adding an oval to the SVG output.
    */
   private void openOval(IFigure fig) {
-    String addOval = "<ellipse id=\"" + fig.getName() + "\" cx=\"" + fig.getXPos() + "\" cy=\"" + fig.getYPos()
-            + "\" rx=\"" + fig.getXDim() + "\" ry=\"" + fig.getYDim() + "\" \n" +
-            "fill=\"" + convertColor(fig.getColor()) + "\" visibility=\"visible\" >\n";
+    String addOval = "<ellipse id=\"" + fig.getName() + "\" cx=\"" + fig.getXPos()
+            + "\" cy=\"" + fig.getYPos() + "\" rx=\"" + fig.getXDim() + "\" ry=\""
+            + fig.getYDim() + "\" \n" + "fill=\"" + convertColor(fig.getColor())
+            + "\" visibility=\"hidden\" >\n";
     appendHelper(this.output, addOval);
+    appendHelper(this.output, setVis(fig));
   }
 
   /**
@@ -122,10 +145,10 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
    */
   private void animateColorChange(IAnimation a) {
 
-    String addAnim = "<animate attributeType=\"xml\" begin=\"" + formatStartTime(a) + "ms\" " +
-            "dur=\"" + formatDuration(a) + "ms\" \nattributeName=\"color\" from=\""
-            + convertColor(a.getFigure().getColor()) + "\" to=\"" + convertColor(a.getNewColor())
-            + "\" fill=\"remove\" />\n";
+    String addAnim = "<animate attributeType=\"CSS\" begin=\"" + formatStartTime(a) + "ms\" " +
+            "dur=\"" + formatDuration(a) + "ms\" \nattributeName=\"fill\" from=\""
+            + convertColor(a.getFigure().getColor()) + "\" \nto=\"" + convertColor(a.getNewColor())
+            + "\" fill=\"freeze\" />\n";
 
     appendHelper(this.output, addAnim);
   }
@@ -133,7 +156,7 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
   /**
    * Writes the animation of scaling into the SVG output.
    *
-   * @param a The IAnimation being translated to SVG format.
+   * @param a  The IAnimation being translated to SVG format.
    * @param xy The dimension that is being scaled.
    */
   private void animateScale(IAnimation a, char xy) {
@@ -173,7 +196,7 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
 
     String addAnim = "<animate attributeType=\"xml\" begin=\"" + formatStartTime(a) + "ms\" " +
             "dur=\"" + formatDuration(a) + "ms\" \nattributeName=\"" + DimName + "\" from=\""
-            + sub1 + "\" to=\"" + sub2 + "\" fill=\"remove\" />\n";
+            + sub1 + "\" to=\"" + sub2 + "\" fill=\"freeze\" />\n";
 
     appendHelper(this.output, addAnim);
   }
@@ -181,33 +204,42 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
   /**
    * Writes the animation of moving an object into the SVG output.
    *
-   * @param a The IAnimation to be transcribed in SVG format.
+   * @param a  The IAnimation to be transcribed in SVG format.
    * @param xy The dimension upon which it is acting.
    */
   private void animateMove(IAnimation a, char xy) {
     String attName;
     String sub1;
     String sub2;
-
+    switch (a.getFigure().getShape()) {
+      case "oval":
+        attName = "c";
+        break;
+      case "rectangle":
+        attName = "";
+        break;
+      default:
+        attName = "";
+    }
     if (xy == 'x') {
-      attName = "cx";
+      attName = attName + "x";
       sub1 = "" + a.getFigure().getXPos();
       sub2 = "" + a.getFigure().updatePosn(a.getDX(), a.getDY()).getXPos();
     } else {
-      attName = "cy";
+      attName = attName + "y";
       sub1 = "" + a.getFigure().getYPos();
       sub2 = "" + a.getFigure().updatePosn(a.getDX(), a.getDY()).getYPos();
     }
     String addAnim = "<animate attributeType=\"xml\" begin=\"" + formatStartTime(a) + "ms\" " +
             "dur=\"" + formatDuration(a) + "ms\" \nattributeName=\"" + attName + "\" from=\""
-            + sub1 + "\" to=\"" + sub2 + "\" fill=\"remove\" />\n";
+            + sub1 + "\" to=\"" + sub2 + "\" fill=\"freeze\" />\n";
 
     appendHelper(this.output, addAnim);
   }
 
   /**
-   * Checks whether an apparent animation is occuring, and then delegates to animateMove to write
-   * it to the SVG output.
+   * Checks whether an apparent animation is occuring, and then delegates to animateMove to write it
+   * to the SVG output.
    *
    * @param a The IAnimation to be written into SVG format.
    */
@@ -245,7 +277,7 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
       case "moves":
         checkMoveAndExecute(a);
         break;
-      case "color changes":
+      case "changes color":
         animateColorChange(a);
         break;
       case "scales":
@@ -263,7 +295,7 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
     firstLine();
 
     // writes all figures into SVG format
-    for (IFigure fig : super.model.getFiguresByStartTime()) {
+    for (IFigure fig : super.model.getFiguresByAdd()) {
       switch (fig.getShape()) {
         case "oval":
           openOval(fig);
