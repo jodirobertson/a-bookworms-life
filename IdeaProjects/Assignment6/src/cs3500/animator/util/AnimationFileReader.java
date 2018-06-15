@@ -8,10 +8,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * This class represents a file reader for the animation file. This reads in the
- * file in the prescribed file format, and relies on a model builder interface.
- * The user of this class should create a model builder that implements this
- * interface.
+ * This class represents a file reader for the animation file. This reads in the file in the
+ * prescribed file format, and relies on a model builder interface. The user of this class should
+ * create a model builder that implements this interface.
  */
 public class AnimationFileReader {
 
@@ -23,8 +22,7 @@ public class AnimationFileReader {
    * @param <T>      the type of model
    * @return the model
    * @throws FileNotFoundException  if the specified file cannot be read
-   * @throws InputMismatchException if some data value is not of the expected
-   *                                type
+   * @throws InputMismatchException if some data value is not of the expected type
    * @throws IllegalStateException  if an illegal token is read from the file
    */
   public <T> T readFile(String fileName, TweenModelBuilder<T> builder) throws

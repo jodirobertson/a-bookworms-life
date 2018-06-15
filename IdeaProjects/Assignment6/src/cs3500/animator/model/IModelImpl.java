@@ -9,11 +9,6 @@ import java.util.List;
  * Represents the concrete implementation of the IModel.
  */
 public class IModelImpl implements IModel {
-
-//  public static final class Builder implements TweenModelBuilder<IModel> {
-//    // FILL IN HERE
-//  }
-
   // INVARIANT: all IFigures in this list are in order of ascending appear time
   // represents all IFigures in the model
   private List<IFigure> figuresByTime;
@@ -46,6 +41,22 @@ public class IModelImpl implements IModel {
     this.figuresByAdd = new LinkedList<>();
   }
 
+  // Update: moved printing methods and capability to the IViewTextSummary class, as per
+  // assignment suggestion
+
+  // Update: added this in view implementation to return sorted list of IFigures in assignment of
+  // IViewVisualAnimation anonymous class
+  @Override
+  public int maxTime() {
+    LinkedList<IFigure> copy = new LinkedList<>();
+    copy.addAll(this.figuresByTime);
+
+    Collections.sort(copy, new IFiguresCompByEnd());
+    return copy.getFirst().getDisappearTime();
+  }
+
+  // Update: added all of these getters as part of Model merge, which made it mush easier to
+  // implement views without parsing through String description
   @Override
   public IFigure getFigure(String fName) {
     if (fName == null || (!(this.figures.containsKey(fName)))) {
@@ -63,18 +74,14 @@ public class IModelImpl implements IModel {
   @Override
   public List<IFigure> getFiguresByStartTime() {
     List<IFigure> copy = new LinkedList<>();
-    for(IFigure f : this.figuresByTime) {
-      copy.add(f);
-    }
+    copy.addAll(this.figuresByTime);
     return copy;
   }
 
   @Override
   public List<IAnimation> getAnimationsByStartTime() {
     List<IAnimation> copy = new LinkedList<>();
-    for(IAnimation a : this.animationsByStartTime) {
-      copy.add(a);
-    }
+    copy.addAll(this.animationsByStartTime);
     return copy;
   }
 
@@ -93,9 +100,7 @@ public class IModelImpl implements IModel {
   @Override
   public List<IFigure> getFiguresByAdd() {
     List<IFigure> copy = new LinkedList<>();
-    for(IFigure f : this.figuresByAdd) {
-      copy.add(f);
-    }
+    copy.addAll(this.figuresByAdd);
     return copy;
   }
 

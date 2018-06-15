@@ -8,6 +8,9 @@ public class IAnimationImplScale extends IAnimationAbstract implements IAnimatio
   private double yFactor;
   private String type = "scales";
 
+  // Update: instance variable String type was added as part of Model merge to avoid instanceof
+  // when determining what type of animation it is outside of model
+
   /**
    * Constructor for an IAnimation that changes the color of the IFigure.
    *

@@ -21,6 +21,17 @@ abstract class IViewAbstract implements IView {
   }
 
   /**
+   * Requires that the given input is not null.
+   *
+   * @throws IllegalArgumentException if the given object is null.
+   */
+  void ensureNotNull(Object o) {
+    if (o == null) {
+      throw new IllegalArgumentException("Given argument is null.");
+    }
+  }
+
+  /**
    * Ensures that the given tick rate is greater than zero.
    *
    * @throws IllegalArgumentException if the tick is less than or equal to zero.
@@ -32,18 +43,17 @@ abstract class IViewAbstract implements IView {
   }
 
   /**
-   * Appends given string argument to the specified output. Catches an IOException if
-   * the output cannot be appended to.
+   * Appends given string argument to the specified output. Catches an IOException if the output
+   * cannot be appended to.
    *
    * @param out The specified Appendable output for the SVG view.
-   * @param s The desired String to be appended.
+   * @param s   The desired String to be appended.
    * @throws IllegalArgumentException if the output cannot be appended to.
    */
   void appendHelper(Appendable out, String s) throws IllegalArgumentException {
     try {
       out.append(s);
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       throw new IllegalArgumentException("Could not be appended to output");
     }
   }

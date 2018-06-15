@@ -7,6 +7,9 @@ public class IAnimationImplColorChange extends IAnimationAbstract implements IAn
   private String type = "changes color";
   private double[] newColor;
 
+  // Update: instance variable String type was added as part of Model merge to avoid instanceof
+  // when determining what type of animation it is outside of model
+
   /**
    * Constructor for an IAnimation that changes the color of the IFigure.
    *
@@ -30,6 +33,7 @@ public class IAnimationImplColorChange extends IAnimationAbstract implements IAn
 
     for (double d : newColor) {
       if (d < 0 || d > 1) {
+        System.out.println(d);
         throw new IllegalArgumentException("Not a valid color input.");
       }
       this.newColor = newColor;

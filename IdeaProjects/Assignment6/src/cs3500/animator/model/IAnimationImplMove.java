@@ -8,6 +8,9 @@ public class IAnimationImplMove extends IAnimationAbstract implements IAnimation
   private double dy;
   private String type = "moves";
 
+  // Update: instance variable String type was added as part of Model merge to avoid instanceof
+  // when determining what type of animation it is outside of model
+
   /**
    * Constructor for an IAnimation that changes the color of the IFigure.
    *

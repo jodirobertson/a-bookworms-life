@@ -1,7 +1,8 @@
 package cs3500.animator.model;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+// Update: combined IFigureImplOval and IFigureImplDummy to become IFigureImplDummy from class
+// discussion suggesting that all shapes can be represented in terms of common data. The
+// distinction is then the added field String shapeName.
 
 /**
  * Represents the shared information among figures.
@@ -55,7 +56,7 @@ public class IFigureImplDummy implements IFigure {
    *
    * @throws IllegalArgumentException if either the given input to build an IFigure is invalid.
    */
-  private void checkConstructor() throws IllegalArgumentException {
+  void checkConstructor() throws IllegalArgumentException {
     // checks appear/disappear
     if (appearsAt >= disappearsAt || appearsAt < 0) {
       throw new IllegalArgumentException("Appear and disappears values don't make sense.");
@@ -129,10 +130,10 @@ public class IFigureImplDummy implements IFigure {
 
   @Override
   public IFigure updatePosn(double dx, double dy) {
-      double oldX = this.xPos;
-      double oldY = this.yPos;
-      double newX = oldX + dx;
-      double newY = oldY + dy;
+    double oldX = this.xPos;
+    double oldY = this.yPos;
+    double newX = oldX + dx;
+    double newY = oldY + dy;
     return new IFigureImplDummy(model, shapeName, color, name, newX, newY, appearsAt, disappearsAt,
             xDim, yDim);
   }

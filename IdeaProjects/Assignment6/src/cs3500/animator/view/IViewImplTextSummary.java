@@ -12,8 +12,8 @@ public class IViewImplTextSummary extends IViewAbstract implements IView {
 
   /**
    * Constructs a view that outputs a summary of text that describes all of the shapes in the
-   * composition and what animations are applied to them, in the order they occur. The tick must
-   * be greater than zero.
+   * composition and what animations are applied to them, in the order they occur. The tick must be
+   * greater than zero.
    *
    * @param output The specified Appendable that will display the view.
    */
@@ -23,6 +23,8 @@ public class IViewImplTextSummary extends IViewAbstract implements IView {
     this.output = output;
     super.tick = tick;
     checkTick();
+    ensureNotNull(model);
+    ensureNotNull(output);
   }
 
   /**
@@ -177,7 +179,8 @@ public class IViewImplTextSummary extends IViewAbstract implements IView {
         return printColorChange(a);
       case "scales":
         return printScale(a);
-        default: return "";
+      default:
+        return "";
     }
   }
 

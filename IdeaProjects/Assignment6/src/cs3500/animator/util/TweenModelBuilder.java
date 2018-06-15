@@ -5,7 +5,6 @@ package cs3500.animator.util;
  * file containing the animation and builds a model. It is parameterized over the actual model
  * type.
  */
-
 public interface TweenModelBuilder<T> {
 
   /**

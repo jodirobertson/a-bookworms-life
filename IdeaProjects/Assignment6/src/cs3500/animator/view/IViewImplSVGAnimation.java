@@ -19,13 +19,30 @@ public class IViewImplSVGAnimation extends IViewAbstract implements IView {
    * composition window, and an output.
    */
   public IViewImplSVGAnimation(IModel model, Appendable output, double tick,
-                               int screenWidth, int screenHeight) {
+                               int screenWidth, int screenHeight) throws IllegalArgumentException {
     super();
     super.model = model;
     super.tick = tick;
     this.output = output;
     this.screenWidth = screenWidth;
     this.screenHeight = screenHeight;
+
+    ensureNotNull(model);
+    ensureNotNull(output);
+    checkTick();
+    checkScreenInput();
+  }
+
+  /**
+   * Ensures that the given screen dimensions are greater than zero.
+   *
+   * @throws IllegalArgumentException if the given screen dimensions are less than or equal to
+   *                                  zero.
+   */
+  private void checkScreenInput() throws IllegalArgumentException {
+    if (screenWidth <= 0 || screenHeight <= 0) {
+      throw new IllegalArgumentException("Screen dimensions must be greater than zero.");
+    }
   }
 
   /**

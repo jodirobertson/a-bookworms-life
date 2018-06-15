@@ -29,6 +29,13 @@ public interface IModel {
   void animate(IAnimation a, String fName) throws IllegalArgumentException;
 
   /**
+   * Returns the disappear time of the last IFigure in the composition.
+   *
+   * @return Returns the time the last IFigure disappears.
+   */
+  int maxTime();
+
+  /**
    * Returns the current IFigure with the given name.
    *
    * @param fName The name of the IFigure to be retrieved.
